@@ -19,7 +19,8 @@ RUN pnpm build
 ENV OPENCLAW_PREFER_PNPM=1
 RUN pnpm ui:build
 
-RUN pnpm prune --prod --no-optional
+# ITT A JAVÍTÁS: Hozzáadtuk a CI=true változót a parancshoz!
+RUN CI=true pnpm prune --prod --no-optional
 
 # --- 2. FÁZIS: FUTTATÁS (RUNNER) ---
 FROM node:22-slim AS runner
@@ -29,7 +30,6 @@ ENV NODE_ENV=production
 
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-# ITT A JAVÍTÁS: A teljes ui mappát másoljuk, nem csak a dist-et!
 COPY --from=builder /app/ui ./ui
 COPY --from=builder /app/openclaw.mjs ./
 COPY --from=builder /app/package.json ./
