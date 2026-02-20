@@ -37,4 +37,4 @@ COPY --from=builder /app/package.json ./
 RUN chown -R node:node /app
 USER node
 
-CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured"]
+CMD ["node", "openclaw.mjs", "gateway", "--allow-unconfigured", "--bind", "lan"]
